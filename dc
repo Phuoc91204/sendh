@@ -1,0 +1,27 @@
+ for _, v in pairs(game.Players:GetChildren()) do
+        for _, part in pairs(v.Character:GetDescendants()) do
+            if part:IsA("BasePart") or part:IsA("Decal") then
+                part.Transparency = 1
+            end
+        end
+    end
+    -- Ẩn tất cả giao diện người dùng của người chơi hiện tại.
+    for i, gui in pairs(game.Players.LocalPlayer.PlayerGui:GetChildren()) do
+        if gui:IsA("ScreenGui") then
+            gui.Enabled = false
+        end
+    end
+    -- Ẩn tất cả giao diện người dùng khởi động và hệ thống.
+    for i, gui in pairs(game:GetService("StarterGui"):GetChildren()) do
+        if gui:IsA("ScreenGui") then
+            gui.Enabled = false
+        end
+    end
+pcall(function()
+    -- Duyệt qua tất cả các đối tượng trong CoreGui và vô hiệu hóa những đối tượng có tên trong danh sách cho trước.
+    for _, gui in pairs(game:GetService("CoreGui"):GetChildren()) do
+~        if gui:IsA("ScreenGui") and table.find({"Chat", "PlayerList", "Backpack", "EmotesMenu", "HealthDisplay"}, gui.Name) then
+~            gui.Enabled = false
+~        end
+~    end
+~end)
