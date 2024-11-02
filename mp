@@ -1,7 +1,7 @@
 getgenv().MailToUser = "wRUXHPF2"
 getgenv().Mailing = {
     Mail_Items = {
-         {Class = "Misc", Item = "Pumpkin", pt = nil, sh = nil, tn = nil, MinAmount = 10000 }
+         {Class = "Misc", Item = "Pumpkin", pt = nil, sh = nil, tn = nil, MinAmount = 2000 }
     }
 }
 
