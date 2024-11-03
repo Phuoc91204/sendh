@@ -1,10 +1,10 @@
 script_key="wLHuQbCbMuwfkBNqHwpzRUTrVIFhTsKG";
 
 _G.GPROGRESS_MODE = "Hybrid"
-_G.GRANK_TO = 5
-_G.GZONE_TO = 221 -- ONLY increase above 99 to go to world2, only when 100% sure, there is no way back for the "best zone" quests etc. 
-_G.GMAX_EGG_SLOTS = 25
-_G.GMAX_EQUIP_SLOTS = 50
+_G.GRANK_TO = 6
+_G.GZONE_TO = 234 -- ONLY increase above 99 to go to world2, only when 100% sure, there is no way back for the "best zone" quests etc. 
+_G.GMAX_EGG_SLOTS = 40
+_G.GMAX_EQUIP_SLOTS = 60
 _G.GHOLD_GIFTS = false
 _G.GHOLD_BUNDLES = false
 _G.GWEBHOOK_USERID = "512126411633459251" -- your discord userID, rightclick your user & copy it, might need to enable DEV settings in discord.
