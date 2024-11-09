@@ -1,6 +1,3 @@
-repeat
-    task.wait(1)
-until game:IsLoaded()
 
 local targetGameId = 84810042603306 -- Ð?t PlaceId mong mu?n
 
