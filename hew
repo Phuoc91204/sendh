@@ -1,8 +1,19 @@
-local TeleportService = game:GetService("TeleportService")
-local placeId = 84810042603306
+local targetGameId = 84810042603306 -- Ð?t PlaceId mong mu?n
 
-if game.PlaceId ~= placeId then
-    TeleportService:Teleport(placeId, game.Players.LocalPlayer)
-else
-    print("Người chơi đã ở trong placeId hiện tại, bỏ qua việc chuyển server.")
+local function getServer()
+    local servers = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. tostring(targetGameId) .. '/servers/Public?sortOrder=Asc&limit=100')).data
+    local server = servers[Random.new():NextInteger(1, #servers)]
+    if server then
+        return server
+    else
+        return getServer()
+    end
 end
+
+-- N?u ngu?i choi dã ? dúng game, d?ng script
+if game.PlaceId == targetGameId then
+    return
+end
+
+-- D?ch chuy?n d?n server khác c?a PlaceId dích
+game:GetService("TeleportService"):TeleportToPlaceInstance(targetGameId, getServer().id, game.Players.LocalPlayer)
