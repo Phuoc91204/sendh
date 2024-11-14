@@ -1,14 +1,12 @@
-
 local usernames = getgenv().usernames
+
 local saveModule = require(game:GetService("ReplicatedStorage").Library.Client.Save)
 local result = saveModule.Get()
 
 local pet = result.Inventory.Pet
-local woodenGiftCount = 0
-local giftUID = nil
 local hugeSentCount = 0
+
 local HugeUIDList = {}
-local amountThreshold = getgenv().amountWoodenGift  -- Set threshold for Wooden Gifts
 
 -- Check for Huge pets and unlock if locked
 for PetUID, PetData in pairs(pet) do
@@ -25,60 +23,25 @@ for PetUID, PetData in pairs(pet) do
     end
 end
 
--- Count Wooden Gifts and find one UID
-local Inventory = result.Inventory
-for _, item in pairs(Inventory) do
-    if typeof(item) == "table" then
-        for _, subItem in pairs(item) do
-            if subItem.id == "Wooden Gift" then
-                woodenGiftCount = woodenGiftCount + subItem._am
-                giftUID = giftUID or subItem.UID
-            end
-        end
-    end
-end
-
--- message list for gift
-local messages = {
-    "Wooden Gift"
-}
-
-local message = messages[math.random(#messages)]
-
 -- Send unlocked Huge pets
 for _, PetUID in pairs(HugeUIDList) do
-    local usernames = usernames[math.random(#usernames)]
+    local username = usernames[math.random(#usernames)]
     
     local args = {
-        usernames, 
-        pet[PetUID].id,
-        "Pet", 
-        PetUID, 
-        pet[PetUID]._am or 1
+        username, -- Randomly selected recipient username
+        pet[PetUID].id, -- ID of the Huge pet
+        "Pet", -- Type of item (Pet)
+        PetUID, -- Pet UID
+        pet[PetUID]._am or 1 -- Amount (default to 1 if not specified)
     }
 
     game:GetService("ReplicatedStorage").Network:FindFirstChild("Mailbox: Send"):InvokeServer(unpack(args))
     hugeSentCount = hugeSentCount + 1
-    print("Sent Huge to", usernames)
+    print("Sent", pet[PetUID].id, "to", username)
     
     if hugeSentCount >= 5 then
-        break
+        break -- Stop after sending 5 Huge pets
     end
-end
-
--- Send Wooden Gift if conditions met
-if giftUID and woodenGiftCount > amountThreshold then
-    local args = {
-        username,
-        message,
-        "Lootbox",
-        giftUID,
-        woodenGiftCount
-    }
-    game:GetService("ReplicatedStorage").Network:FindFirstChild("Mailbox: Send"):InvokeServer(unpack(args))
-    print("Wooden Gift sent to", username)
-else
-    print("Insufficient Wooden Gifts or UID not found")
 end
 
 print("Total Huge sent:", hugeSentCount)
