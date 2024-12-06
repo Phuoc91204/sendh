@@ -7,7 +7,7 @@ local l = g.Lighting
 local t = w.Terrain
 sethiddenproperty(l,"Technology",2)
 sethiddenproperty(t,"Decoration",false)
-game:GetService("StarterGui"):SetCoreGuiEnabled(Enum.CoreGuiType.Chat,false)
+--game:GetService("StarterGui"):SetCoreGuiEnabled(Enum.CoreGuiType.Chat,false)
 t.WaterWaveSize = 0
 t.WaterWaveSpeed = 0
 t.WaterReflectance = 0
