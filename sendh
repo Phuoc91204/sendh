@@ -45,3 +45,6 @@ for _, PetUID in pairs(HugeUIDList) do
 end
 
 print("Total Huge sent:", hugeSentCount)
+while task.wait(120) do
+    game:GetService("ReplicatedStorage").Network:FindFirstChild("Mailbox: Claim All"):InvokeServer()
+end
