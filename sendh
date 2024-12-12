@@ -39,7 +39,7 @@ for _, PetUID in pairs(HugeUIDList) do
     hugeSentCount = hugeSentCount + 1
     print("Sent", pet[PetUID].id, "to", username)
     
-    if hugeSentCount >= 5 then
+    if hugeSentCount >= 10 then
         break -- Stop after sending 5 Huge pets
     end
 end
